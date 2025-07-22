@@ -45,6 +45,7 @@ Generate exact reusable functions for ERP automation by referring to:
   C:\\CSF\\erp-apps-aut\\projects\\workflows\\src\\CSF\\ReusableFunctions
 - Existing Page Object Models (POMs) in this path:
   C:\\CSF\\erp-apps-aut\\projects\\ui\\src\\UIApps
+  with all Header detials and line details
 
 Use the provided HTML code of the ERP page as the target for automation.
 Match the coding style, structure, and naming conventions found in the referenced reusable functions and POMs.
