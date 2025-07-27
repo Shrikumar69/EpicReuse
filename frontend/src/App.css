@@ -1,0 +1,329 @@
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  background-color: #015567; /* Dark teal color from attachment */
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.App {
+  text-align: center;
+  width: 100%;
+  padding: 20px;
+}
+
+.App-header {
+  padding: 2rem;
+  border-radius: 12px;
+  max-width: 800px;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.App-logo {
+  height: 80px;
+  margin-bottom: 1rem;
+}
+
+h1 {
+  margin: 0.5rem 0;
+  color: #ffffff;
+  text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+}
+
+.form-container {
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+  width: 100%;
+  max-width: 700px;
+  margin-top: 1rem;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center items horizontally */
+  gap: 1.5rem; /* Consistent spacing between elements */
+  width: 100%;
+  box-sizing: border-box;
+  position: static; /* Ensure it doesn't create a stacking context that blocks events */
+}
+
+/* Style for the Form Name field at the top */
+.form-name-top {
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background-color: #ffffff;
+  border-radius: 8px;
+  border: none;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  width: 100%;
+  box-sizing: border-box; /* Ensure padding is included in width */
+  margin-left: auto;
+  margin-right: auto;
+  pointer-events: auto; /* Ensure elements inside can receive events */
+}
+
+.form-name-top label {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #333333;
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+.form-name-top input {
+  width: 100%;
+  padding: 0.75rem;
+  border-radius: 8px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  background-color: #ffffff;
+  color: #333333;
+  font-size: 1rem;
+  height: 42px; /* Consistent height */
+  box-sizing: border-box; /* Ensure padding doesn't affect overall size */
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  pointer-events: auto !important; /* Explicitly enable pointer events with higher priority */
+  cursor: text !important; /* Ensure text cursor appears */
+}
+
+textarea {
+  box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+  width: 100%;
+  padding: 0.75rem;
+  border-radius: 8px;
+  border: none;
+  resize: vertical;
+  font-family: monospace;
+  font-size: 1rem;
+  background-color: #f0f0f0;
+  color: #333;
+  min-height: 150px; /* Consistent height */
+  box-sizing: border-box;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.button-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 1.5rem;
+  width: 100%;
+}
+
+button {
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 8px;
+  background-color: #ffffff;
+  color: #1A6D7E;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 100%;
+  max-width: 200px;
+  font-weight: 600;
+  height: 42px; /* Consistent height with inputs */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+button:hover {
+  background-color: #e0f7f7;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.result {
+  margin-top: 1.5rem;
+  text-align: left;
+  max-height: 500px;
+  overflow-y: auto;
+  border: 1px solid rgba(0, 255, 255, 0.3);
+  background: #000;
+  color: #0f0;
+  padding: 1rem;
+  border-radius: 8px;
+}
+
+.result pre {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  font-family: 'Consolas', monospace;
+  font-size: 0.9rem;
+  overflow-x: auto;
+}
+
+.upload-toggle {
+  display: flex;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.upload-toggle button {
+  flex: 1;
+  max-width: none;
+  margin: 0;
+  border-radius: 0;
+  background-color: rgba(255, 255, 255, 0.2);
+  color: white;
+  padding: 0.5rem 1rem;
+}
+
+.upload-toggle button.active {
+  background-color: rgba(255, 255, 255, 0.8);
+  color: #1A6D7E;
+}
+
+.file-upload {
+  background-color: rgba(255, 255, 255, 0.05);
+  padding: 2rem;
+  border-radius: 8px;
+  border: 2px dashed rgba(255, 255, 255, 0.3);
+  margin-bottom: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.file-upload input[type="file"] {
+  margin-bottom: 1rem;
+  color: white;
+  width: 100%;
+  max-width: 300px;
+}
+
+.file-preview {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.8);
+  margin: 0;
+}
+
+.error-message {
+  margin-top: 1rem;
+  padding: 1rem;
+  background-color: rgba(255, 50, 50, 0.2);
+  border-left: 4px solid #ff5050;
+  border-radius: 4px;
+  text-align: left;
+}
+
+.error-message h3 {
+  margin-top: 0;
+  color: #ff5050;
+}
+
+.result-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.copy-button {
+  padding: 0.4rem 0.8rem;
+  font-size: 0.8rem;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: white;
+}
+
+.primary-button {
+  background-color: #00b3b3;
+  color: white;
+}
+
+.primary-button:hover {
+  background-color: #008080;
+}
+
+.metadata {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 0.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px dashed rgba(255, 255, 255, 0.3);
+}
+
+.custom-paths {
+  margin: 1.5rem 0;
+  text-align: left;
+  width: 100%;
+}
+
+.custom-paths label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  margin-bottom: 0.5rem;
+}
+
+.paths-form {
+  margin-top: 1rem;
+  background-color: rgba(255, 255, 255, 0.05);
+  padding: 1.5rem;
+  border-radius: 8px;
+  width: 100%;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+  width: 100%;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 0.75rem;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background-color: rgba(255, 255, 255, 0.1);
+  color: white;
+  font-size: 0.9rem;
+  height: 42px; /* Consistent height with other inputs */
+}
+
+@media (max-width: 600px) {
+  .App-header {
+    padding: 1rem;
+  }
+
+  textarea {
+    font-size: 0.8rem;
+  }
+
+  button {
+    width: 100%;
+  }
+}
