@@ -3,18 +3,17 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "start": "cd frontend && npm start",
+    "start:backend": "cd backend && npm run dev",
+    "start:all": "concurrently \"npm run start:backend\" \"npm run start\"",
+    "build": "cd frontend && npm run build && cd ../backend && npm run build",
+    "install:all": "npm install && cd frontend && npm install && cd ../backend && npm install"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "",
-  "dependencies": {
-    "axios": "^1.10.0",
-    "openai": "^5.10.1",
-    "react-scripts": "^5.0.1"
+  "description": "Generate reusable functions for ERP automation from HTML code",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
   }
 }
