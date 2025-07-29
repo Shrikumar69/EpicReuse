@@ -178,7 +178,7 @@ function App() {
                   boxSizing: 'border-box'
                 }}
                 value={customPaths.formName}
-                onChange={e => setCustomPaths({...customPaths, formName: e.target.value})}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setCustomPaths({...customPaths, formName: e.target.value})}
                 placeholder="Enter the form name to search for (e.g., APInvoice, PurchaseOrder)"
               />
             </div>
@@ -203,7 +203,7 @@ function App() {
             {uploadMode === 'paste' ? (
               <textarea
                 value={html}
-                onChange={e => setHtml(e.target.value)}
+                onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setHtml(e.target.value)}
                 rows={10}
                 placeholder="Paste your HTML code here..."
               />
@@ -237,18 +237,20 @@ function App() {
                     <input 
                       type="text" 
                       value={customPaths.reusableFunctionPath}
-                      onChange={e => setCustomPaths({...customPaths, reusableFunctionPath: e.target.value})}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => setCustomPaths({...customPaths, reusableFunctionPath: e.target.value})}
                       placeholder="C:/CSF/erp-apps-aut/projects/workflows/src/CSF/ReusableFunctions"
                     />
+                    <small className="path-helper-text">If path doesn't exist, built-in examples will be used</small>
                   </div>
                   <div className="form-group">
                     <label>POM Files Path:</label>
                     <input 
                       type="text" 
                       value={customPaths.pomPath}
-                      onChange={e => setCustomPaths({...customPaths, pomPath: e.target.value})}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => setCustomPaths({...customPaths, pomPath: e.target.value})}
                       placeholder="C:/CSF/erp-apps-aut/projects/ui/src/UIApps"
                     />
+                    <small className="path-helper-text">If path doesn't exist, built-in examples will be used</small>
                   </div>
                 </div>
               )}

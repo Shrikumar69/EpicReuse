@@ -103,9 +103,12 @@ export const readFilesWithExtension = (
   }
   
   // First prioritize files at the root level that match common naming patterns
+  // If formNameFilter is provided, make it the highest priority
   const priorityPatterns = formNameFilter 
     ? [
-        new RegExp(formNameFilter, 'i'), // Form name as highest priority
+        new RegExp(`${formNameFilter}.*?${extension.replace('.', '\\.')}$`, 'i'), // Exact form name match
+        new RegExp(`${formNameFilter}`, 'i'), // Form name as substring
+        new RegExp(`.*?${formNameFilter}.*?`, 'i'), // Form name anywhere in the filename
         /helper/i,
         /funcs/i,
         /po/i
@@ -124,9 +127,39 @@ export const readFilesWithExtension = (
     
     try {
       const items = fs.readdirSync(currentPath);
+      console.log(`Scanning directory: ${currentPath} (depth: ${depth}, items: ${items.length})`);
       
-      // First pass - check for priority files
-      if (depth === 0) {
+      // First pass - check if form name matches any directory name and prioritize it
+      if (formNameFilter) {
+        for (const item of items) {
+          const itemPath = path.join(currentPath, item);
+          const stats = fs.statSync(itemPath);
+          
+          // If directory name matches form name, give it top priority
+          if (stats.isDirectory() && item.toLowerCase().includes(formNameFilter.toLowerCase())) {
+            console.log(`Found directory matching form name: ${item}`);
+            // Recursively check this directory first with high priority
+            const subDirItems = fs.readdirSync(itemPath);
+            console.log(`Checking priority directory: ${itemPath} (items: ${subDirItems.length})`);
+            
+            for (const subItem of subDirItems) {
+              if (fileCount >= maxFiles) break;
+              
+              const subItemPath = path.join(itemPath, subItem);
+              const subStats = fs.statSync(subItemPath);
+              
+              if (subStats.isFile() && subItem.endsWith(extension)) {
+                console.log(`Found file in form name directory: ${subItem}`);
+                result[subItem] = readFileWithTruncation(subItemPath);
+                fileCount++;
+              }
+            }
+          }
+        }
+      }
+      
+      // Second pass - check for priority files
+      if (depth === 0 || (formNameFilter && depth <= 3)) {
         for (const pattern of priorityPatterns) {
           if (fileCount >= maxFiles) break;
           
@@ -137,30 +170,37 @@ export const readFilesWithExtension = (
             const stats = fs.statSync(itemPath);
             
             if (stats.isFile() && item.endsWith(extension) && pattern instanceof RegExp && pattern.test(item)) {
+              console.log(`Found priority file match: ${item} using pattern: ${pattern.toString()}`);
               result[item] = readFileWithTruncation(itemPath);
               fileCount++;
-              console.log(`Found priority file: ${item}`);
+              console.log(`Added priority file: ${itemPath}`);
             }
           }
         }
       }
       
-      // Second pass - add remaining files
+      // Third pass - add remaining files
       for (const item of items) {
         if (fileCount >= maxFiles) break;
         
         const itemPath = path.join(currentPath, item);
         const stats = fs.statSync(itemPath);
         
-        if (stats.isDirectory() && depth < 2) { // Limit recursion depth
+        if (stats.isDirectory() && depth < 5) { // Increased recursion depth to search deeper
           readDir(itemPath, depth + 1);
         } else if (stats.isFile() && item.endsWith(extension) && !result[item]) {
           // If form name filter is provided, only include files that match the filter
-          if (formNameFilter && !new RegExp(formNameFilter, 'i').test(item)) {
-            continue;
+          if (formNameFilter) {
+            const formNameRegex = new RegExp(formNameFilter, 'i');
+            if (!formNameRegex.test(item)) {
+              console.log(`Skipping file ${item} - doesn't match form name filter: ${formNameFilter}`);
+              continue;
+            }
+            console.log(`Including file ${item} - matches form name filter: ${formNameFilter}`);
           }
           result[item] = readFileWithTruncation(itemPath);
           fileCount++;
+          console.log(`Added regular file: ${itemPath}`);
         }
       }
     } catch (error) {
@@ -169,6 +209,15 @@ export const readFilesWithExtension = (
   };
   
   readDir(dirPath);
+  
+  // Log summary of files found
+  console.log(`File search complete. Found ${Object.keys(result).length} matching files.`);
+  if (Object.keys(result).length > 0) {
+    console.log(`Files found: ${Object.keys(result).join(', ')}`);
+  } else {
+    console.log(`No files found matching extension ${extension}${formNameFilter ? ` and form name filter ${formNameFilter}` : ''}`);
+  }
+  
   return result;
 };
 

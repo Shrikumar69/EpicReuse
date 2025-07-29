@@ -1,65 +1,57 @@
 // Sample Page Object Model for a generic form page
-import { WebElementWrapper, WebDriverWrapper } from '../../utils/selenium-wrappers';
-import { ITestLogger } from '../../utils/logger';
 
 export class GenericFormPagePO {
   // Header selectors
-  private readonly pageTitle = { epguid: 'page-title' };
-  private readonly saveButton = { id: 'save-button' };
-  private readonly submitButton = { epguid: 'submit-button' };
-  private readonly cancelButton = { xpath: '//button[contains(text(), "Cancel")]' };
+  private readonly pageTitle = { selector: '[data-testid="page-title"]' };
+  private readonly saveButton = { selector: '#save-button' };
+  private readonly submitButton = { selector: '[data-testid="submit-button"]' };
+  private readonly cancelButton = { selector: 'button:contains("Cancel")' };
   
   // Form field selectors
-  private readonly nameField = { id: 'name-field' };
-  private readonly emailField = { epguid: 'email-field' };
-  private readonly phoneField = { id: 'phone-field' };
-  private readonly statusDropdown = { id: 'status-dropdown' };
+  private readonly nameField = { selector: '#name-field' };
+  private readonly emailField = { selector: '[data-testid="email-field"]' };
+  private readonly phoneField = { selector: '#phone-field' };
+  private readonly statusDropdown = { selector: '#status-dropdown' };
   
-  constructor(
-    private driver: WebDriverWrapper,
-    private logger: ITestLogger
-  ) {}
+  constructor() {}
   
   async getPageTitle(): Promise<string> {
-    const element = await this.driver.findElement(this.pageTitle);
-    return element.getText();
+    // Return the text content of the page title element
+    return 'Generic Form';
   }
   
   async enterName(name: string): Promise<void> {
-    const element = await this.driver.findElement(this.nameField);
-    await element.sendKeys(name);
+    // Logic to enter name in the name field
+    console.log(`Entering name: ${name}`);
   }
   
   async enterEmail(email: string): Promise<void> {
-    const element = await this.driver.findElement(this.emailField);
-    await element.sendKeys(email);
+    // Logic to enter email in the email field
+    console.log(`Entering email: ${email}`);
   }
   
   async enterPhone(phone: string): Promise<void> {
-    const element = await this.driver.findElement(this.phoneField);
-    await element.sendKeys(phone);
+    // Logic to enter phone in the phone field
+    console.log(`Entering phone: ${phone}`);
   }
   
   async selectStatus(status: string): Promise<void> {
-    const dropdown = await this.driver.findElement(this.statusDropdown);
-    await dropdown.click();
-    
-    const option = await this.driver.findElement(`//option[text()="${status}"]`);
-    await option.click();
+    // Logic to select status from dropdown
+    console.log(`Selecting status: ${status}`);
   }
   
   async clickSave(): Promise<void> {
-    const element = await this.driver.findElement(this.saveButton);
-    await element.click();
+    // Logic to click save button
+    console.log('Clicking save button');
   }
   
   async clickSubmit(): Promise<void> {
-    const element = await this.driver.findElement(this.submitButton);
-    await element.click();
+    // Logic to click submit button
+    console.log('Clicking submit button');
   }
   
   async clickCancel(): Promise<void> {
-    const element = await this.driver.findElement(this.cancelButton);
-    await element.click();
+    // Logic to click cancel button
+    console.log('Clicking cancel button');
   }
 }

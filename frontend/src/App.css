@@ -314,6 +314,14 @@ button:disabled {
   height: 42px; /* Consistent height with other inputs */
 }
 
+.path-helper-text {
+  display: block;
+  margin-top: 0.3rem;
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.7);
+  font-style: italic;
+}
+
 @media (max-width: 600px) {
   .App-header {
     padding: 1rem;

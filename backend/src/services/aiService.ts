@@ -128,11 +128,12 @@ HTML Summary:
 Key requirements:
 1. Analyze the HTML structure focusing on form elements, buttons, tables, and key UI components
 2. Generate a helper class that EXACTLY matches the code style, formatting, and patterns from the examples
-3. Use the SAME selector strategies (epguid, id, xpath) and variable declaration style as in the example files
+3. Use the EXACT SAME selector strategies (epguid, id, xpath) and variable declaration style as in the example files
 4. Copy the EXACT import statements from the examples, using the same relative path structure
 5. Use IDENTICAL method signatures, error handling patterns with try/catch blocks, and logging approaches
 6. Follow the EXACT same TypeScript type annotations, spacing, indentation, and code organization
 7. The result must be indistinguishable from code written by the same developer who wrote the examples
+8. When files have import statements, DO NOT MODIFY these paths - keep them EXACTLY as they appear in the examples
 
 DO NOT under any circumstances:
 - Invent new patterns, method structures, or approaches not seen in the examples
@@ -140,6 +141,7 @@ DO NOT under any circumstances:
 - Add any comments, explanations or documentation that don't match the style in the examples
 - Use any frameworks, libraries, or imports not shown in the examples
 - Create methods that don't follow the exact same structure as those in the examples
+- Modify import paths from the examples - even if they seem wrong, KEEP THEM AS IS
 
 Your output must be ONLY the complete TypeScript file with no explanations, matching the examples down to the smallest details of syntax, spacing, and code organization.`;
 
@@ -164,21 +166,22 @@ Below are examples of Page Object Models (POMs) that show the selector strategie
 ${pomExamplesStr}
 \`\`\`
 
-CRITICAL REQUIREMENTS TO FOLLOW EXACTLY:
-1. Create a class with the same naming pattern (e.g., FormNameHelper) with the IDENTICAL constructor signature
-2. Copy the EXACT same import statements with the same relative paths (../../utils/selenium-wrappers, etc.)
-3. Create helper methods with the EXACT same structure:
-   - Same method signature format and parameter style
-   - Same logger.info calls at the beginning with the same format
-   - Same try-catch block structure with identical error handling
-   - Same logger.info success message at the end
-   - Same error logging pattern in catch blocks
-4. Use the IDENTICAL selector strategies (epguid, id, xpath) with the same declaration style
-5. Copy the EXACT same spacing, indentation, and formatting
-6. If examples use private readonly variables for selectors, use the same pattern
-7. Match every aspect of the code style including use of async/await, string templates, comment style, etc.
+CRITICAL INSTRUCTIONS - FOLLOW EXACTLY:
+1. The code MUST look IDENTICAL in structure to the examples above
+2. Use the EXACT SAME import statements and relative paths seen in the examples - DO NOT MODIFY THESE PATHS AT ALL
+3. Use the EXACT SAME constructor signature seen in the reusable functions
+4. Use the EXACT SAME selector approach (id, epguid, xpath) in the EXACT SAME format as the examples
+5. Create methods that follow the IDENTICAL pattern:
+   - Same method signatures (parameter order and types)
+   - Same logging/console statements at the beginning, during, and end of methods
+   - Same error handling with identical try/catch blocks and error logging
+6. Match the exact spacing, indentation, and code formatting
+7. Use the same naming conventions for variables, methods, and classes
+8. DO NOT change any import paths in the examples - keep them EXACTLY as they are given in the examples
 
-DO NOT add any explanations or deviate in ANY way from the coding style in the examples. Your output must be the COMPLETE TYPESCRIPT CLASS only, with no additional text before or after.
+Your output MUST BE INDISTINGUISHABLE from the example code as if written by the same developer.
+DO NOT add any explanations, comments, or text that isn't in the same style as the examples.
+Your output must be the COMPLETE TYPESCRIPT CLASS only, with no additional text before or after.
 `;
 
     try {
@@ -208,7 +211,13 @@ DO NOT add any explanations or deviate in ANY way from the coding style in the e
       const result = response.data.choices[0].message?.content || '';
       const finishReason = response.data.choices[0].finish_reason;
       
+      // Clean up the result - remove markdown code block syntax if present
       let finalResult = result;
+      if (result.startsWith('```typescript')) {
+        finalResult = result.replace(/^```typescript\n/, '').replace(/```$/, '');
+      } else if (result.startsWith('```')) {
+        finalResult = result.replace(/^```\n/, '').replace(/```$/, '');
+      }
       
       // If the response was cut off, add a note
       if (finishReason === 'length') {

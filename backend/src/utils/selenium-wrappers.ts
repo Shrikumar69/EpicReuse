@@ -1,14 +1,14 @@
-// Selenium wrappers for automation
-export interface WebElementWrapper {
+// Element wrappers for automation - mock implementations
+export interface ElementWrapper {
   sendKeys(text: string): Promise<void>;
   click(): Promise<void>;
   getText(): Promise<string>;
   getAttribute(attributeName: string): Promise<string>;
-  findElements(selector: any): Promise<WebElementWrapper[]>;
+  findElements(selector: any): Promise<ElementWrapper[]>;
 }
 
-export class WebDriverWrapper {
-  async findElement(selector: any): Promise<WebElementWrapper> {
+export class DOMWrapper {
+  async findElement(selector: any): Promise<ElementWrapper> {
     // Mock implementation
     return {
       sendKeys: async (text: string) => {},
@@ -19,7 +19,7 @@ export class WebDriverWrapper {
     };
   }
   
-  async waitForElement(selector: any): Promise<WebElementWrapper> {
+  async waitForElement(selector: any): Promise<ElementWrapper> {
     // Mock implementation
     return this.findElement(selector);
   }
